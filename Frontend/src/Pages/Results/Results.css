@@ -1,0 +1,11 @@
+.results{
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  padding: 1vw 1.5vw;
+}
+.sideBar h3{
+  font-size: 1vw;
+}
+.sideBar p{
+  font-size: 0.9vw;
+}

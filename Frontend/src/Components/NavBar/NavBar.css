@@ -1,0 +1,145 @@
+.nav-bar{
+  width: 100%;
+  padding: 0.6%;
+  background-color: black;
+  color: white;
+  display: grid;
+  grid-template-columns: 0.5fr 0.8fr 3.5fr 0.3fr 0.6fr 0.5fr 0.5fr;
+  gap: 0.3vw;
+  align-items: center;
+  position: sticky;
+  top: 0px;
+  z-index: 50;
+
+}
+.font_size{
+  font-size: 1vw;
+  cursor: pointer;
+}
+
+.logo img{
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+.container{
+  display: flex;
+  gap: 0.3vw;
+  align-items: center;
+  cursor: pointer;
+}
+.location img{
+  width: 1.5vw;
+}
+.drop_down{
+  width: 8%;
+  display: flex;
+  background-color: white;
+  border-radius: 4px 0px 0px 4px;
+  align-items: center;
+  padding-left: 2%;
+  padding-right: 1%;
+  border-right: 0.1vw solid gray;
+
+}
+.drop_down img{
+  width: 50%;
+  height: 20%;
+}
+.drop_down{
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.input_field{
+  display:grid;
+  grid-template-columns: 0.2fr 2.5fr 0.2fr;
+  align-items: center;
+  outline: orange;
+}
+.input_field select{
+  width: 2vw;
+  color: gray;
+  border: none;
+  appearance: none;
+  margin: 0px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0.5vw;
+
+}
+.input_field input{
+  border: none;
+  outline: orange;
+}
+.input_field input, .input_field select{
+  height: 3vw;
+  padding: 1.5%;
+  font-size: 1.2vw;
+}
+.search_icon{
+  background-color: orange;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5vw;
+  border: none;
+  height: 3vw;
+  border-radius: 0vw 0.5vw 0.5vw 0vw;
+}
+.search_icon img{
+  width: 1.9vw;
+}
+.language_field{
+  align-items: center;
+  justify-content: center;
+}
+.language_field img{
+  width: 30%;
+}
+.cart_field img{
+    width: 30%;
+}
+@media screen and (max-width:900px) {
+  .font_size{
+    font-size: 1.3vw;
+  }
+  .language_field img{
+    width: 40%;
+  }
+
+}
+.user_account{
+  position: relative;
+}
+.hided_Container{
+  padding: 1.5vw;
+  border-radius: 1vw;
+  width: 30vw;
+  position: absolute;
+  background-color: white;
+  right: 2vw;
+  z-index: 20;
+}
+.hided_Container_Inner{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1vw;
+}
+.hided_Container_Inner p{
+  cursor: pointer;
+  font-size: 0.8vw;
+  margin: 0.4vw 0vw;
+}
+.hided_Container_Inner p:hover{
+  text-decoration: underline;
+  color: brown;
+}
+.hided_header{
+  display: flex;
+  justify-content: space-between;
+  background-color: rgb(201, 229, 220);
+  padding: 1vw;
+  border-radius: 0.5vw;
+}

@@ -1,0 +1,49 @@
+.footer{
+  margin-top: 5%;
+  width: 100%;
+  background-color: rgb(35, 28, 28);
+  color: white;
+}
+.top_btn{
+  width: 100%;
+  border: none;
+  background-color: rgb(75, 71, 71);
+  color:white;
+  padding: 1.5%;
+  cursor: pointer;
+}
+
+.more_details{
+  display: flex;
+  justify-content: space-between;
+}
+.more_details ul{
+  list-style-type: none;
+}
+.more_details ul li{
+  margin: 2vw;
+  cursor: pointer;
+  font-size: 1vw;
+}
+.more_details ul li b{
+  font-size: 2vw;
+}
+.more_details ul li:hover{
+  text-decoration: underline;
+}
+.footer_logo{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 2%;
+}
+.footer_logo img{
+  width: 10vw;
+}
+hr{
+  border: 1px solid rgb(109, 108, 108);
+}
+.copy_right{
+  padding: 1.5%;
+  text-align: center;
+}

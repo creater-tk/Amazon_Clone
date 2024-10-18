@@ -1,0 +1,124 @@
+.home_page{
+  width: 100%;
+}
+.categories_field{
+  background-color: rgb(50, 48, 48);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+  padding: 0.7% 2%;
+}
+.menu_field{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.menu_field img{
+  width: 20%;
+}
+.dropdown img{
+  width: 20%;
+}
+.categories_field p{
+  cursor: pointer;
+}
+
+.banner_field{
+  width: 100%;
+  position: relative;
+  height: 41vw;
+}
+.banner_field img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.arrow_field{
+  position: absolute;
+  top: 0px;
+}
+.banner_cards{
+  position: absolute;
+  top: 25vw;
+}
+.box_field{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2vw;
+  padding: 0px 3%;
+}
+.box{
+  background-color: white;
+  padding: 5%;
+}
+.box img{
+  width: 100%;
+}
+h2{
+  margin-bottom: 15px;
+}
+
+/* Styles for Deals*/
+
+.deals_container{
+  background-color: rgb(244, 195, 103);
+  padding: 0.7% 2%;
+  margin: 0.7% 2%;
+}
+.deals_box_products{
+  display: flex;
+  gap: 20px;
+  overflow: auto;
+  flex-direction: row;
+  width: 100%;
+}
+.product_box{
+  background-color: white;
+  padding: 1.5%;
+  width: 18vw;
+  margin-top: 20px;
+  flex-shrink: 0;
+}
+.product_box span{
+  color: rgb(113, 111, 111);
+}
+.product_box span span{
+  text-decoration: line-through;
+}
+.product_box img{
+  width: 100%;
+  height: 80%;
+}
+.top_deals{
+  display: flex;
+  gap: 20px;
+  flex-shrink: 0;
+  overflow: auto;
+  margin: 2% 2%;
+}
+.top_deals div{
+  width: 20vw;
+}
+.top_deals div img{
+  width: 100%;
+}
+@media (max-width:600px) {
+  .box{
+    width: 90%;
+    height: 90%;
+    padding: 8%;
+  }
+  h2{
+    margin-bottom: 1.3%;
+  }
+  .banner_cards{
+    top: 32vw;
+  }
+}
+
+@media (mix-width:900px) and (max-width:1000px) {
+  .banner_cards{
+    top: 27vw;
+  }
+}

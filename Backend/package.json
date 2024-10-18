@@ -1,0 +1,29 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "amazon_server.js",
+  "type": "module",
+  "scripts": {
+    "server": "nodemon amazon_server.js"
+  },
+  "keywords": [
+    "amazon",
+    "clone"
+  ],
+  "author": "Tharun",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.17.3",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.9.0",
+    "mongoose": "^8.7.0",
+    "multer": "^1.4.5-lts.1",
+    "stripe": "^17.2.0",
+    "validator": "^13.12.0"
+  }
+}

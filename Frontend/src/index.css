@@ -1,0 +1,39 @@
+*{
+  font-family:Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  margin: 0px;
+  scroll-behavior: smooth;
+  padding: 0px;
+  transition: 500ms;
+}
+
+h2{
+  font-size: 1.3vw;
+}
+h3{
+  font-size: 1.2vw;
+}
+::-webkit-scrollbar{
+  display: none;
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+ul{
+  list-style-type: none;
+}
+sup, sub, li, button, p, label, option{
+  font-size: 1vw;
+}
+table{
+  font-size: 1vw;
+}
+b{
+  font-size: 1.1vw;
+}
+hr{
+  border-color: rgb(206, 194, 194);
+  margin: 1vw 0vw;
+}
+

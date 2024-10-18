@@ -1,0 +1,25 @@
+.NavBar{
+  display: flex;
+  justify-content: space-around;
+  padding: 1% 2%;
+  align-items: center;
+  background-color: rgb(79, 76, 76);
+  position: sticky;
+  top: 0px;
+}
+.logo{
+  width: 13vw;
+}
+.logo img{
+  width: 100%;
+}
+.navigator{
+  display: flex;
+  align-items: center;
+  font-size: 1.3vw;
+  gap: 2vw;
+  justify-content: flex-start;
+}
+.navigator li{
+  cursor: pointer;
+}
