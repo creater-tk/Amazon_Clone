@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
 
 const Results = () => {
 
-  const {getProduct, Backend_url, setGetProduct, addToCart , setProductPreview} = useContext(StoreContext);
+  const {getProduct, Backend_url, addToCart , setProductPreview, loginStatus} = useContext(StoreContext);
 
 
   const [price, setPrice] = useState(50);
@@ -145,8 +145,10 @@ const Results = () => {
 
                   <p>FREE devlivery as soon <b>Tue, 5 Nov, 8am -5 pm</b></p>
 
-                  <Link to='/cart'>
-                    <button onClick={()=>(addToCart(eachProduct._id, eachProduct.name, eachProduct.new_price))} className='primary_btn' style={{width:'8vw'}}>Add to cart</button>
+                  <Link to={loginStatus?'/cart':"/account"}>
+                    <button onClick={()=>{
+                      loginStatus?(addToCart(eachProduct._id, eachProduct.name, eachProduct.new_price)):''
+                    }} className='primary_btn' style={{width:'8vw'}}>Add to cart</button>
                   </Link>
 
 
