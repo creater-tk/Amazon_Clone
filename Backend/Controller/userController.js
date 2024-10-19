@@ -40,7 +40,7 @@ const userRegistration = async (req, res)=>{
     
     const newUser = new User({name, email, mobile_number, password:hashedPassword});
     await newUser.save()
-    return res.status(200).send({succss:true, message:"User Registered Successfull"})
+    return res.status(200).send({success:true, message:"User Registered Successfully"})
   } catch (error) {
     return res.status(500).send({success:false, message:`Error:${error.message}`})
   }
@@ -89,4 +89,16 @@ const getUserDetails = async (req, res)=>{
   }
 }
 
-export {userRegistration, userLogin, getUserDetails}
+const updateUserDetails = async (req, res)=>{
+  try {
+    const {_id, updatedData} = req.body;
+    const update = {$set:{...updatedData}}
+    const updatedDetails = await User.findByIdAndUpdate(_id, update, {new:true, runValidators:true})
+
+    return res.status(200).send({success:true, message:updatedDetails})
+  } catch (error) {
+    return res.status(400).send({success:false, message:error.message})
+  }
+}
+
+export {userRegistration, userLogin, getUserDetails, updateUserDetails}

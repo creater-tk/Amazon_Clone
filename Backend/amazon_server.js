@@ -6,10 +6,10 @@ import dotenv from 'dotenv'
 import connect_DataBase from './MongoDB_Connection/mongoDB.js';
 import Storage from './File_Handle/file_Handling.js';
 import { addProduct, getAllProducts, removeProduct, resultedProducts } from './Controller/productController.js';
-import { userRegistration,userLogin, getUserDetails } from './Controller/userController.js';
+import { userRegistration,userLogin, getUserDetails,updateUserDetails } from './Controller/userController.js';
 
 import verifyUser from './MiddleWare/authentication.js';
-import { addToCart } from './Controller/cartController.js';
+
 
 const Upload = multer({storage:Storage})
 const app = express();
@@ -30,10 +30,9 @@ app.post('/results', resultedProducts);
 app.post('/register', userRegistration);
 app.post('/login', userLogin);
 app.post('/userDetails', verifyUser, getUserDetails)
+app.put('/update', updateUserDetails)
 
 
-//Cart api
-app.post('/addToCart', verifyUser, addToCart);
 
 connect_DataBase();
 

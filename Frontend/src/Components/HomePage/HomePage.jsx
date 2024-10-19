@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import './HomePage.css'
 import {assets} from '../../assets/assets.js'
+import { StoreContext } from '../../StoreContext/StoreContext.jsx'
 
 const HomePage = () => {
+  const {setLoginStatus} = useContext(StoreContext);
+  useEffect(()=>{
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(user){
+        setLoginStatus(user.isLogin)
+    }
+  })
+
   return (
     <div className='home_page' id='top'>
       <div className="categories_field">

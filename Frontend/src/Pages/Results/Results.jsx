@@ -11,7 +11,6 @@ const Results = () => {
 
   const {getProduct, Backend_url, addToCart , setProductPreview, loginStatus} = useContext(StoreContext);
 
-
   const [price, setPrice] = useState(50);
   const [result, setResult] = useState([]);
 
@@ -147,7 +146,7 @@ const Results = () => {
 
                   <Link to={loginStatus?'/cart':"/account"}>
                     <button onClick={()=>{
-                      loginStatus?(addToCart(eachProduct._id, eachProduct.name, eachProduct.new_price)):''
+                      loginStatus?(addToCart()):''
                     }} className='primary_btn' style={{width:'8vw'}}>Add to cart</button>
                   </Link>
 

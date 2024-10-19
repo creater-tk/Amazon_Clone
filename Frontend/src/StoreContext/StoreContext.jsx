@@ -22,26 +22,12 @@ const StoreContextProvider = (props) =>{
   const [productPreview, setProductPreview] = useState({});
 
   const [allProducts, setAllProducts] = useState([]);
-  let quantity = 1;
 
-  const addToCart = async (id, name, price) =>{
+  const addToCart = async (id) =>{
     try {
-      const cartPayLoad = {userId:userId, productId:id, productName:name, price:price, quantity:quantity};
-      const config = {
-        headers:{
-          token:userToken
-        }
-      }
-      const response = await axios.post(`${Backend_url}/addToCart`, cartPayLoad, config);
-      if(response.data.success){
-        return setCartData((prevItems)=>([
-          ...prevItems, response.data.data
-        ]));
-      }else{
-        return toast.error(response.data.message);
-      }
+      
     } catch (error) {
-      return toast.error(`Error:${error.message}`)
+      
     }
   }
 

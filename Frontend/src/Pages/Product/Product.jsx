@@ -115,8 +115,8 @@ const Products = () => {
               <option value="4">4</option>
             </select>
           </div>
-          <button style={{backgroundColor:'rgb(227, 184, 29)'}} >Add to Cart</button>
-          <button style={{backgroundColor:'orange'}} onClick={()=>(addToCart(productPreview.id, productPreview.name, eachProduct.new_price))} >Buy Now</button>
+          <button onClick={addToCart(productPreview._id)} style={{backgroundColor:'rgb(227, 184, 29)'}} >Add to Cart</button>
+          <button style={{backgroundColor:'orange'}} >Buy Now</button>
           <table>
             <tr>
               <td style={{color:'gray'}}>Ships from </td>
