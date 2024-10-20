@@ -23,11 +23,24 @@ const StoreContextProvider = (props) =>{
 
   const [allProducts, setAllProducts] = useState([]);
 
-  const addToCart = async (id) =>{
+  const addToCart = async (productId) =>{
     try {
-      
+      const existingUser = await axios.post(`${Backend_url}/userDetails`, {_id:userId}, {headers:{token:userToken}});
+      console.log(existingUser)
+
+      let updateUserCart = existingUser.data.data.cartInfo;
+      console.log(updateUserCart);
+      updateUserCart.push(productId);
+      console.log(updateUserCart)
+
+      const response = await axios.put(`${Backend_url}/update`, {_id:userId, updatedData:{cartInfo:updateUserCart}})
+      if(response.data.success){
+        return toast.success("Added to  Cart");
+      }else{
+        return toast.error("Failded to add")
+      }
     } catch (error) {
-      
+      return toast.error(error.message)
     }
   }
 

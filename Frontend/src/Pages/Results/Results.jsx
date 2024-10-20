@@ -146,7 +146,7 @@ const Results = () => {
 
                   <Link to={loginStatus?'/cart':"/account"}>
                     <button onClick={()=>{
-                      loginStatus?(addToCart()):''
+                      loginStatus?(addToCart(eachProduct._id)):''
                     }} className='primary_btn' style={{width:'8vw'}}>Add to cart</button>
                   </Link>
 
