@@ -6,7 +6,7 @@ import { StoreContext} from '../../StoreContext/StoreContext.jsx'
 
 const NavBar = () => {
 
-  const {setGetProduct} = useContext(StoreContext);
+  const {setGetProduct, noOfCartItems} = useContext(StoreContext);
 
   const user = JSON.parse(localStorage.getItem("user"))
   let loginStatus = false
@@ -20,7 +20,6 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   const [showContainer, setShowContainer] = useState(false)
-
 
   const hoverHandler = ()=>{
     setShowContainer(true)
@@ -43,7 +42,7 @@ const NavBar = () => {
   }
 
   const onChangeHandler = (e)=>{
-    setGetProduct(e.target.value)
+    setGetProduct(e.target.value);
   }
 
   useEffect(()=>{
@@ -111,7 +110,10 @@ const NavBar = () => {
 
         <Link to='/cart'>
           <div className='container cart_field font_size'>
-            <img src={assets.cart_icon} alt="" />
+            <div>
+              <img style={{position:'relative', width:'2vw'}} src={assets.cart_icon} alt="" />
+              <div style={{position:'absolute', top:"1.3vw", right:"6.5vw", background:'black', color:'orange', padding:'0.01vw'}}>{noOfCartItems}</div>
+            </div>
             <p>Cart</p>
           </div>
         </Link>

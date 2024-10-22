@@ -9,10 +9,11 @@ import {Link} from 'react-router-dom'
 
 const Results = () => {
 
-  const {getProduct, Backend_url, addToCart , setProductPreview, loginStatus} = useContext(StoreContext);
+  const {getProduct, Backend_url, updateCart , setProductPreview, loginStatus, loading, setLoading} = useContext(StoreContext);
 
   const [price, setPrice] = useState(50);
   const [result, setResult] = useState([]);
+
 
   const priceHander = (e)=>{
     setPrice(e.target.value*100)
@@ -28,6 +29,7 @@ const Results = () => {
   const getResultedProducts = async ()=>{
     try {
       let response;
+      setLoading(true);
       
       getProduct === ''? 
         response = await axios.get(`${Backend_url}/viewProducts`):
@@ -41,6 +43,8 @@ const Results = () => {
       }
     } catch (error) {
       toast.error(`Error:${error.message}`)
+    }finally{
+      setLoading(false)
     }
   }
 
@@ -127,36 +131,36 @@ const Results = () => {
       <div>
         <h3>Results</h3>
         <p>Check each product page for other buying options, Price and other details may vary based on product size and color</p>
-        <div style={{ padding:'1vw 2vw'}}>
+        <div style={{ padding:'1vw 2vw', position:'relative'}}>
           {result.length>=1?
-          <div style={{marginTop:'2vw'}}>
-            {result.map((eachProduct, index)=>(
-              <div style={{display:'grid', gridTemplateColumns:'0.3fr 1fr'}} key={index}>
-                <img style={{width:'13vw'}} src={`${Backend_url}/Images/${eachProduct.image}`} alt="" />
-                <div style={{display:'flex', flexDirection:'column', gap:'0.5vw'}}>
-                  <Link to='/products'>
-                    <h3 onClick={()=>setProductPreview({name:eachProduct.name, description:eachProduct.description, price:eachProduct.new_price, old_price:eachProduct.old_price, image:eachProduct.image, id:eachProduct._id})}>{eachProduct.name} {eachProduct.description}</h3>
-                  </Link>
-                  
-                  <img style={{width:'6vw'}} src={assets.rating_img} alt="" />
+            loading
+            ?<div className='loader'></div>
+            :<div style={{marginTop:'2vw'}}>
+              {result.map((eachProduct, index)=>(
+                <div style={{display:'grid', gridTemplateColumns:'0.3fr 1fr'}} key={index}>
+                  <img style={{width:'13vw'}} src={`${Backend_url}/Images/${eachProduct.image}`} alt="" />
+                  <div style={{display:'flex', flexDirection:'column', gap:'0.5vw'}}>
+                    <Link to='/products'>
+                      <h3 onClick={()=>setProductPreview({name:eachProduct.name, description:eachProduct.description, price:eachProduct.new_price, old_price:eachProduct.old_price, image:eachProduct.image, id:eachProduct._id})}>{eachProduct.name} {eachProduct.description}</h3>
+                    </Link>
+                    
+                    <img style={{width:'6vw'}} src={assets.rating_img} alt="" />
 
-                  <p style={{color:"gray"}}><sup>₹</sup><span style={{fontSize:'1.5vw', color:'black'}}>{eachProduct.new_price} </span>M.R.P: <span style={{textDecoration:'lineThrough'}}>{eachProduct.old_price}</span>&lb;13% &rb; <br /> Save extra with No Cost EMI</p>
+                    <p style={{color:"gray"}}><sup>₹</sup><span style={{fontSize:'1.5vw', color:'black'}}>{eachProduct.new_price} </span>M.R.P: <span style={{textDecoration:'lineThrough'}}>{eachProduct.old_price}</span>&lb;13% &rb; <br /> Save extra with No Cost EMI</p>
 
-                  <p>FREE devlivery as soon <b>Tue, 5 Nov, 8am -5 pm</b></p>
+                    <p>FREE devlivery as soon <b>Tue, 5 Nov, 8am -5 pm</b></p>
 
-                  <Link to={loginStatus?'/cart':"/account"}>
-                    <button onClick={()=>{
-                      loginStatus?(addToCart(eachProduct._id)):''
-                    }} className='primary_btn' style={{width:'8vw'}}>Add to cart</button>
-                  </Link>
-
-
+                    <Link to={loginStatus?'':"/account"}>
+                      <button onClick={()=>{
+                        loginStatus?(updateCart(eachProduct._id, "Add")):''
+                      }} className='primary_btn' style={{width:'8vw'}}>Add to cart</button>
+                    </Link>
+                  </div>
+                  <hr />
                 </div>
-                <hr />
-              </div>
-            ))}
-          </div>:
-          <div style={{display:'flex', height:'90vh', alignItems:'center', justifyContent:'center'}}>
+              ))}
+            </div>
+          :<div style={{display:'flex', height:'90vh', alignItems:'center', justifyContent:'center'}}>
             <h1>No Products Found</h1>
           </div>}
         </div>

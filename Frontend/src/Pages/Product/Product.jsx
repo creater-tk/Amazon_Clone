@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 const Products = () => {
 
-  const {productPreview, Backend_url, addToCart} = useContext(StoreContext);
+  const {productPreview, Backend_url, updateCart} = useContext(StoreContext);
   const navigate = useNavigate();
 
   if(Object.keys(productPreview).length <1){
@@ -115,7 +115,7 @@ const Products = () => {
               <option value="4">4</option>
             </select>
           </div>
-          <button onClick={addToCart(productPreview._id)} style={{backgroundColor:'rgb(227, 184, 29)'}} >Add to Cart</button>
+          <button onClick={()=>{updateCart(productPreview._id, "Add")}} style={{backgroundColor:'rgb(227, 184, 29)'}} >Add to Cart</button>
           <button style={{backgroundColor:'orange'}} >Buy Now</button>
           <table>
             <tr>
