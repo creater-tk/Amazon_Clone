@@ -8,6 +8,7 @@ import Layout from './Layout.jsx'
 import Your_Account from './Pages/Your_Account/Your_Account.jsx'
 import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import Results from './Pages/Results/Results.jsx'
+import Checkout from './Pages/Checkout/Checkout.jsx'
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
         <Route path='/your_account' element={<Layout><Your_Account/></Layout>}/>
         <Route path='/dashboard' element={<Layout><Dashboard/></Layout>}/>
         <Route path='/results' element={<Layout><Results/></Layout>}/>
+        <Route path='/checkout' element={<Checkout/>}/>
       </Routes>
     </div>
   )

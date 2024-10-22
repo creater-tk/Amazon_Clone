@@ -71,9 +71,13 @@ import payBalance from './payBalance.png'
 import prime from './prime.png'
 import primeBusiness from './primeBusiness.png'
 import support from './support.png'
+import lockIcon from './lockIcon.png'
+import amazon_location_icon from './amazon_location_icon.png'
 
 export const assets = {
   amazon_logo_dark,
+  amazon_location_icon,
+  lockIcon,
   support,
   landMark,
   lock,

@@ -18,9 +18,37 @@ const placeOrder = async (req, res)=>{
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.body.userId, {cartInfo:{}})
 
-    
+    const line_items = req.body.items.map((item)=>({
+      price_data:{
+        currency:"inr",
+        product_data:{
+          name:item.name
+        },
+        unit_ammout:item.price*100
+      },
+      quantity:item.quantity
+    }))
+
+    line_items.push({
+      price_data:{
+        currency:"inr",
+        product_data:{
+          name:"Delivery Charges"
+        },
+        unit_amount:40*100
+      },
+      quantity:1
+    })
+
+    const session = await stripe.checkout.sessions.create({
+      line_items:line_items,
+      mode:"payment",
+      success_url:`http://localhost:5173/verify?success:true&orderId=${newOrder._id}`,
+      cancel_url:`http://localhost:5173/verify?success:false&orderId=${newOrder._id}`,
+    })
+    return res.status(200).send({success:true, message:"payment Successfull", session_url:session.url})
   } catch (error) {
-    
+    return res.status(400).send({success:false, message:`Payment Failded:${error.message}`})
   }
 }
 

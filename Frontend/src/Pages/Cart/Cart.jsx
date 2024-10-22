@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import './Cart.css';
 import { StoreContext } from '../../StoreContext/StoreContext.jsx';
+import { Link } from 'react-router-dom';
 
 const Cart = () => {
 
@@ -93,7 +94,10 @@ const Cart = () => {
             <input style={{width:'2vw'}} type="checkbox" id='giftBox' />
             <label htmlFor="giftBox">This order contains a gift</label>
           </div>
-          <button style={{ padding: '1vw', border: 'none', borderRadius: '2vw', backgroundColor: 'orange', cursor: 'pointer' }}>Proceed to checkout</button>
+          <Link to='/checkout'>
+            <button style={{ padding: '1vw', border: 'none', borderRadius: '2vw', backgroundColor: 'orange', cursor: 'pointer' }}>Proceed to checkout</button>
+          </Link>
+
         </div>
       }
     </div>
