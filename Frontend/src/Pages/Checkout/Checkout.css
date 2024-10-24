@@ -47,3 +47,14 @@ select{
 textarea{
   font-size: 1vw;
 }
+.disableCursor{
+  cursor: not-allowed;
+}
+.pri_color{
+  color: rgb(248, 74, 11);
+}
+.delivery_item{
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  gap: 1vw;
+}

@@ -27,23 +27,19 @@ const Results = () => {
   );
 
   const getResultedProducts = async ()=>{
-    try {
-      let response;
-      setLoading(true);
-      
-      getProduct === ''? 
-        response = await axios.get(`${Backend_url}/viewProducts`):
-        response = await axios.post(`${Backend_url}/results`, {name: getProduct});
-      
+    let response;
+    setLoading(true);
+    
+    getProduct === ''? 
+      response = await axios.get(`${Backend_url}/viewProducts`):
+      response = await axios.post(`${Backend_url}/results`, {name: getProduct});
+    
 
-      if(response.data.success){
-        setResult(response.data.data);
-      }else{
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error(`Error:${error.message}`)
-    }finally{
+    if(response.data.success){
+      setResult(response.data.data);
+      setLoading(false);
+    }else{
+      toast.error(response.data.message);
       setLoading(false)
     }
   }

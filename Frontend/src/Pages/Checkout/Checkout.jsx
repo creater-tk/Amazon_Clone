@@ -1,9 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import './Checkout.css'
 import { assets } from '../../assets/assets.js'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
+import { StoreContext } from '../../StoreContext/StoreContext.jsx'
+import axios from 'axios'
 
 const Checkout = () => {
+
+  const {cartData, allProducts, fecthAllProducts, Backend_url, cartTotal,findProduct, userToken, userId,arrivalDate} = useContext(StoreContext);
+  const navigate = useNavigate();
+
+  const [orderItems, setOrderItems] = useState([]);
 
   const [addAddress, setAddAddress] = useState(false)
   const [addressData, setAddressData] = useState({
@@ -13,8 +21,13 @@ const Checkout = () => {
     building:'',
     area:'',
     town:'',
-    state:'Andhra Pradesh'
+    state:'Andhra Pradesh',
+    country:'India'
   })
+  const [showAddress, displayAddress ] = useState(false);
+  const [displayAddressContainer, setAddressContainer] = useState(true);
+  const [displayPayment, setDisplayPayment] = useState(false);
+  const [displayDelivery, setDisplayDelivery] = useState(false);
 
   const onChangeHandler = (e)=>{
     const name = e.target.name;
@@ -32,8 +45,64 @@ const Checkout = () => {
     </div>
   )
 
+  const updateAddress = (e)=>{
+    e.preventDefault();
+    displayAddress(true);
+    setAddAddress(false)
+  }
 
-  
+
+  const orderedItems = ()=>{
+      let orderItems = [];
+      if(allProducts.length>0){
+        allProducts.map(product=>{
+          if(cartData.length>0){
+            cartData.map(cartItem=>{
+              if(cartItem.productId === product._id){
+                let itemInfo = product;
+                itemInfo['quantity'] = cartItem.quantity;
+                orderItems.push(itemInfo)
+              }
+            })
+          }
+        })
+      }
+      setOrderItems(orderItems);
+  }
+
+  const placeOrder = async ()=>{
+    try {
+      const itemsOrdered = {
+        address:addressData,
+        amount:cartTotal.total,
+        items:orderItems,
+        userId:userId
+      }
+
+      console.log(itemsOrdered.items);
+
+      const response = await axios.post(`${Backend_url}/placeOrder`, itemsOrdered, {headers:{token:userToken}});
+      if(response.data.success){
+        const {session_url} = response.data;
+        window.location.replace(session_url);
+      }else{
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  }
+
+
+  useEffect(()=>{
+    fecthAllProducts();
+    orderedItems();
+    findProduct();
+    if(cartData.length === 0){
+      navigate('/')
+      toast.error("Something went wrong!")
+    }
+  },[])
 
   return (
     <div style={{padding:"1vw 10vw", zIndex:1}}>
@@ -46,12 +115,20 @@ const Checkout = () => {
       <div className={`main_section ${addAddress?'changeOpacity':''}`}>
         <div>
           <div>
-            <h2 style={{color:'orangeRed'}}>1 Select a delivery address</h2>
+            <h2 className={`${displayAddressContainer?'pri_color':''}`}>1 Select a delivery address</h2>
 
+          {displayAddressContainer?
             <div style={{padding:'1vw', border:'1px solid gray', borderRadius:'1vw'}}>
               <h2>Your addresses</h2>
               <hr />
 
+              {showAddress?
+                <div style={{padding:'0.65vw', backgroundColor:'lightpink'}}>
+                  <input type="checkbox" id='address'/>
+                  <label htmlFor='address'><b>{addressData.name}</b> ,{addressData.pinCode}, {addressData.area}, {addressData.building}, {addressData.town}, {addressData.state}, {addressData.country}, {addressData.phone}</label>
+                </div>
+                :''}
+                <hr />
               <div>
                 <p onClick={()=>setAddAddress(true)} style={{color:'blue', cursor:'pointer'}}><span style={{fontSize:'2vw', fontWeight:'bold', color:'GrayText'}}>+</span> Add a new address</p>
               </div>
@@ -64,19 +141,82 @@ const Checkout = () => {
               <hr />
 
               <div>
-                <button className='primary_btn' disabled={addAddress}>Use this address</button>
+                <button onClick={()=>{setDisplayPayment(true); setAddressContainer(false)}}  className={`primary_btn ${!showAddress?'disableCursor':''}`} disabled={!showAddress}>Use this address</button>
               </div>
             </div>
+          :''}
           </div>
+          
+          <hr />
+          
+          <div>
+            <h2 style={{color:`${displayPayment?'orangered':'black'}`}}>2 Payment method</h2>
+            {displayPayment?
+              <div style={{border:'1px solid gray', padding:'1vw', borderRadius:'1vw'}}>
+                <h2>Payment method</h2>
+                <hr />
+                <div>
+                  <input type="checkbox" id='upi' name='upi' />
+                  <label htmlFor='upi'><b>Online payment</b></label>
+                </div>
+
+                  
+                <hr />
+
+                <div>
+                  <input type="checkbox" id='cash' name='cash'/>
+                  <label htmlFor='cash'><b>Cash on Delivery/Pay on Delivery</b></label>
+                </div>
+
+                <hr />
+
+                <button onClick={()=>{setDisplayPayment(false); setDisplayDelivery(true)}} className='primary_btn'>Use this payment method</button>
+              </div>
+            :''}
+          </div>  
+          
           <hr />
 
           <div>
-            <h2 style={{color:'gray'}}>2 Payment method</h2>
-          </div>
-          <hr />
+            <h2 style={{color:`${displayDelivery?'orangered':'black'}`}}>3 Items and devlivery</h2>
 
-          <div>
-            <h2 style={{color:'gray'}}>2 Items and devlivery</h2>
+            {displayDelivery?
+              <div style={{border:'1px solid gray', padding:'1vw', borderRadius:'1vw'}}>
+                <h2>Review items and delivery</h2>
+                <div>
+                  {arrivalDate()}
+                  <p>if you order in the next 21 hours and 44 minues ( Details ) <br /> Items dispatched by Amazon</p>
+
+                  {orderItems.map(eachItem =>(
+                    <div className='delivery_item' key={eachItem._id}>
+                      <div>
+                        <img style={{width:'5vw'}} src={`${Backend_url}/Images/${eachItem.image}`} alt="" />
+                      </div>
+                      <div>
+                        <p><b>{eachItem.name} {eachItem.description}</b></p>
+
+                        <p><span style={{color:'gray', textDecoration:'line-through'}}>₹{eachItem.old_price}</span> <b style={{color:"orangered"}}>₹{eachItem.new_price}</b></p>
+
+                        <p>Quantity:{eachItem.quantity}</p>
+
+                        <p style={{color:'gray'}}>Sold by: Amazon.com</p>
+
+                        <hr />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div style={{display:'flex', alignItems:'center', gap:'1vw'}}>
+                  <button onClick={placeOrder} className='primary_btn'>Proceed to Pay</button>
+                  <div>
+                    <h2 style={{color:'orangered'}}>Order Total: ₹{cartTotal.total}.00</h2>
+                    <p style={{color:'gray', fontSize:'0.8vw'}}>By placing your order, your agree to Amazon privacy notice and conditions</p>
+                  </div>
+                </div>
+
+              </div>  
+            :''}
           </div>
           <hr />
 
@@ -103,13 +243,13 @@ const Checkout = () => {
             <h2>Order Summary</h2>
             <div>
               <div style={{display:'flex', justifyContent:'space-between'}}>
-                <p>Items:</p>
-                <p>--</p>
+                <p>Items: </p>
+                <p>{cartTotal.quantity}</p>
               </div>
 
               <div style={{display:'flex', justifyContent:'space-between'}}>
                 <p>Delivery:</p>
-                <p>--</p>
+                <p>0</p>
               </div>
             </div>
             <hr />
@@ -117,7 +257,7 @@ const Checkout = () => {
             <div>
               <div>
                 <h2>Order Total:</h2>
-                <h2 style={{color:'orangeRed'}}>45200000</h2>
+                <h2 style={{color:'orangeRed'}}>{cartTotal.total}</h2>
               </div>
             </div>
             <hr />
@@ -131,13 +271,13 @@ const Checkout = () => {
           <button onClick={()=>setAddAddress(false)} style={{fontSize:'3vw', margin:'0px', height:'2vw', padding:'0.1vw', cursor:'pointer'}}>*</button>
         </div>
 
-        <form>
+        <form onSubmit={updateAddress}>
           <h1 style={{fontSize:'2.2vw'}}>Add a new address</h1>
           <hr />
 
           <div style={{display:'flex', flexDirection:'column'}}>
             <label htmlFor="choose_country">Country?Region</label>
-            <select id="choose_country" className='secondary_input'>
+            <select onChange={onChangeHandler} id="choose_country" name='country' value={addressData.country} className='secondary_input'>
               <option value="India">India</option>
             </select>
           </div>

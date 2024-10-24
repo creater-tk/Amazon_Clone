@@ -5,36 +5,9 @@ import { Link } from 'react-router-dom';
 
 const Cart = () => {
 
-  const { cartData, Backend_url, fecthAllProducts, allProducts, updateCart, setNoOfCartItems } = useContext(StoreContext);
-
-  const [cartItems, setCartItems] = useState([]);
-  const [showContainer, setShowContainer] = useState(false);
-  const [cartTotal, setCartTotal] = useState({ quantity: 0, total: 0 });
+  const { cartData, Backend_url, fecthAllProducts, allProducts, updateCart,findProduct, cartItems, showContainer, cartTotal } = useContext(StoreContext);
 
 
-  const findProduct = () => {
-    if (cartData.length > 0 && allProducts.length > 0) {
-      let totalQuantity = 0;
-      let totalPrice = 0;
-      const items = cartData.map(eachCartItem => {
-        const product = allProducts.find(eachProduct => eachCartItem.productId === eachProduct._id);
-        if (product) {
-          totalQuantity += eachCartItem.quantity;
-          totalPrice += product.new_price * eachCartItem.quantity;
-          return {
-            ...product,
-            quantity:eachCartItem.quantity
-          }
-        }
-        return null;
-      }).filter(item => item !== null);
-
-      setCartItems(items);
-      setCartTotal({ quantity: totalQuantity, total: totalPrice });
-      setShowContainer(items.length > 0);
-      setNoOfCartItems(totalQuantity)
-    }
-  };
 
   useEffect(() => {
     fecthAllProducts();

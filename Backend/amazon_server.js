@@ -9,11 +9,12 @@ import { addProduct, getAllProducts, removeProduct, resultedProducts } from './C
 import { userRegistration,userLogin, getUserDetails,updateUserDetails } from './Controller/userController.js';
 
 import verifyUser from './MiddleWare/authentication.js';
-import placeOrder from './Controller/orderController.js';
+import {placeOrder, verifyOrder, viewOrders} from './Controller/orderController.js';
 
 
 const Upload = multer({storage:Storage})
 const app = express();
+
 dotenv.config();
 
 app.use(express.json());
@@ -36,6 +37,8 @@ app.put('/update', updateUserDetails)
 
 //Order api
 app.post('/placeOrder',verifyUser, placeOrder);
+app.post('/verify', verifyOrder);
+app.post('/orders', verifyUser, viewOrders)
 
 connect_DataBase();
 

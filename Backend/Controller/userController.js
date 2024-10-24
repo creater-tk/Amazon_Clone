@@ -101,4 +101,4 @@ const updateUserDetails = async (req, res)=>{
   }
 }
 
-export {userRegistration, userLogin, getUserDetails, updateUserDetails}
+export {userRegistration, userLogin, getUserDetails, updateUserDetails, User}
