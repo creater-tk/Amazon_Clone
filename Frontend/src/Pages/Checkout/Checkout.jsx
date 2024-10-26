@@ -27,7 +27,32 @@ const Checkout = () => {
   const [showAddress, displayAddress ] = useState(false);
   const [displayAddressContainer, setAddressContainer] = useState(true);
   const [displayPayment, setDisplayPayment] = useState(false);
-  const [displayDelivery, setDisplayDelivery] = useState(false);
+  const [displayDelivery, setDisplayDelivery] = useState(false); 
+  const [paymentMethod, setPaymentMethod] = useState({
+    upi:true,
+    cash:false
+  })
+
+
+  const paymentHandler = (e)=>{
+    const  checked = e.target.checked;
+    const name = e.target.name
+    setPaymentMethod(prev=>{
+      if(name==="upi"){
+        return {
+          upi:checked,
+          cash:false
+        }
+      }else if(name === 'cash'){
+        return {
+          upi:false,
+          cash:checked
+        }
+      }
+
+      return prev
+    })
+  }
 
   const onChangeHandler = (e)=>{
     const name = e.target.name;
@@ -71,25 +96,21 @@ const Checkout = () => {
   }
 
   const placeOrder = async ()=>{
-    try {
-      const itemsOrdered = {
-        address:addressData,
-        amount:cartTotal.total,
-        items:orderItems,
-        userId:userId
-      }
-
-      console.log(itemsOrdered.items);
-
-      const response = await axios.post(`${Backend_url}/placeOrder`, itemsOrdered, {headers:{token:userToken}});
-      if(response.data.success){
-        const {session_url} = response.data;
-        window.location.replace(session_url);
-      }else{
-        toast.error(response.data.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
+    const itemsOrdered = {
+      address:addressData,
+      amount:cartTotal.total,
+      items:orderItems,
+      userId:userId,
+      paymentMode:paymentMethod.upi?'onlinePayment':'cashOnDelivery'
+    }
+    console.log(itemsOrdered.paymentMode);
+    const response = await axios.post(`${Backend_url}/placeOrder`, itemsOrdered, {headers:{token:userToken}});
+    if(response.data.success){
+      const {session_url} = response.data;
+      window.location.replace(session_url);
+      localStorage.removeItem('userCart');
+    }else{
+      toast.error(response.data.message);
     }
   }
 
@@ -124,7 +145,7 @@ const Checkout = () => {
 
               {showAddress?
                 <div style={{padding:'0.65vw', backgroundColor:'lightpink'}}>
-                  <input type="checkbox" id='address'/>
+                  <input type="checkbox" id='address' checked/>
                   <label htmlFor='address'><b>{addressData.name}</b> ,{addressData.pinCode}, {addressData.area}, {addressData.building}, {addressData.town}, {addressData.state}, {addressData.country}, {addressData.phone}</label>
                 </div>
                 :''}
@@ -156,7 +177,7 @@ const Checkout = () => {
                 <h2>Payment method</h2>
                 <hr />
                 <div>
-                  <input type="checkbox" id='upi' name='upi' />
+                  <input onChange={paymentHandler} type="checkbox" id='upi' name='upi' checked={paymentMethod.upi}/>
                   <label htmlFor='upi'><b>Online payment</b></label>
                 </div>
 
@@ -164,7 +185,7 @@ const Checkout = () => {
                 <hr />
 
                 <div>
-                  <input type="checkbox" id='cash' name='cash'/>
+                  <input onChange={paymentHandler} type="checkbox" id='cash' name='cash' checked={paymentMethod.cash}/>
                   <label htmlFor='cash'><b>Cash on Delivery/Pay on Delivery</b></label>
                 </div>
 
@@ -208,7 +229,10 @@ const Checkout = () => {
                 </div>
 
                 <div style={{display:'flex', alignItems:'center', gap:'1vw'}}>
-                  <button onClick={placeOrder} className='primary_btn'>Proceed to Pay</button>
+                  <Link to={`${paymentMethod.cash?'/verify':''}`}>
+                      <button onClick={placeOrder} className='primary_btn'>{paymentMethod.upi?'Proceed to Pay':'Proceed to confirm order'}</button> 
+                  </Link>
+
                   <div>
                     <h2 style={{color:'orangered'}}>Order Total: ₹{cartTotal.total}.00</h2>
                     <p style={{color:'gray', fontSize:'0.8vw'}}>By placing your order, your agree to Amazon privacy notice and conditions</p>

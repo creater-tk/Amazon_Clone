@@ -33,7 +33,11 @@ const Your_Account = () => {
       <h2 style={{fontWeight:'400'}}>Your Account</h2>
 
       <div className='section_Container'>
-        {addSection(assets.parcel_icon, "Your Orders", "Track, return, or buy things again")}
+
+        <Link to='/orders'>
+          {addSection(assets.parcel_icon, "Your Orders", "Track, return, or buy things again")}
+        </Link>
+
 
         <Link to='/dashboard'>
         {addSection(assets.lock, "Login & sercurity", "Edit login, name, and mobile number")}

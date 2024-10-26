@@ -83,7 +83,7 @@ const StoreContextProvider = (props) =>{
       localStorage.setItem("userCart", JSON.stringify(updateUserCart))
       return toast.success(action === "Add"?"Added To Cart":"Removed");
     }else{
-      return toast.error("Failded to update try afterSometime")
+      return toast.error("Error")
     }
   }
 
@@ -95,6 +95,7 @@ const StoreContextProvider = (props) =>{
       return toast.error(response.data.message);
     }
   }
+  
   const findProduct = () => {
     if (cartData.length > 0 && allProducts.length > 0) {
       let totalQuantity = 0;

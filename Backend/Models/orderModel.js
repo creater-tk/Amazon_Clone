@@ -28,6 +28,10 @@ const orderSchema = mongoose.Schema({
   payment:{
     type:Boolean,
     default:false
+  },
+  paymentMode:{
+    type:String,
+    required:true
   }
 })
 

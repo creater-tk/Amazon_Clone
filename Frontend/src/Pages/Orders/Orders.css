@@ -1,0 +1,26 @@
+.orderDisplayContainer{
+  border: 1px solid gray;
+  border-radius: 1vw;
+  margin-bottom: 1vw;
+}
+.orderDisplayContainer ul{
+  display:grid;
+  grid-template-columns: 0.2fr 0.2fr 0.6fr 0.3fr;
+  padding: 1vw;
+  background-color: lightgray;
+  border-radius: 1vw 1vw 0vw 0vw;
+}
+.orderModify{
+  display: flex;
+  flex-direction: column;
+  gap:0.3vw
+}
+.orderModify button{
+  border:0.8px solid gray;
+  border-radius: 1vw;
+  padding:0.5vw;
+  font-size: 0.8vw;
+  width:15vw;
+  background-color: transparent;
+  cursor: pointer;
+}

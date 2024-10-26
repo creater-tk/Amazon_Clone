@@ -104,9 +104,12 @@ const NavBar = () => {
           </div>
         </Link>
 
-        <div className='font_size'>
-          <p>Returns <br /><b  style={{fontSize:'1vw'}}>& Orders</b></p>
-        </div>
+        <Link to='/orders'>
+          <div className='font_size'>
+            <p>Returns <br /><b  style={{fontSize:'1vw'}}>& Orders</b></p>
+          </div>
+        </Link>
+
 
         <Link to='/cart'>
           <div className='container cart_field font_size'>

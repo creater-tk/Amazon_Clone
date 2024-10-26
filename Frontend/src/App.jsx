@@ -10,6 +10,7 @@ import Dashboard from './Pages/Dashboard/Dashboard.jsx'
 import Results from './Pages/Results/Results.jsx'
 import Checkout from './Pages/Checkout/Checkout.jsx'
 import Verify from './Pages/Verify/Verify.jsx'
+import Orders from './Pages/Orders/Orders.jsx'
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path='/results' element={<Layout><Results/></Layout>}/>
         <Route path='/checkout' element={<Checkout/>}/>
         <Route path='/verify' element={<Layout><Verify/></Layout>}/>
+        <Route path='/orders' element={<Layout><Orders/></Layout>}/>
       </Routes>
     </div>
   )

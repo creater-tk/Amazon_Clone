@@ -4,11 +4,11 @@ const verifyUser = async (req, res, next)=>{
   try {
     const {token} = req.headers;
     if(!token){
-      return res.status(400).send({success:false, message:"token Not found"});
+      return res.status(400).send({success:false, message:"Error"});
     }
 
     try {
-      const verifyToken = jwt.verify(token, process.env.JWT_SECRET);
+      jwt.verify(token, process.env.JWT_SECRET);
     } catch (error) {
       return res.status(400).send({success:"Not Verified", message:"Session experied", navigate:'/account'});
     }

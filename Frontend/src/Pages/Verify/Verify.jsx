@@ -3,7 +3,6 @@ import {useSearchParams} from 'react-router-dom'
 import axios from 'axios'
 import { StoreContext } from '../../StoreContext/StoreContext.jsx';
 import { toast } from 'react-toastify';
-import {assets} from '../../assets/assets.js'
 
 const Verify = () => {
 
@@ -18,7 +17,7 @@ const Verify = () => {
   const verifyOrder = async ()=>{
       const response = await axios.post(`${Backend_url}/verify` , {orderId:orderId, success:success});
       if(response.data.success){
-        toast.success(response.data.message)
+        toast.success("Order Confirmed Thank You!")
         localStorage.removeItem("userCart");
         setCartData([]);
       }else{
@@ -50,7 +49,7 @@ const Verify = () => {
         ?orderItems.map(eachItem =>{
           const {name, pinCode, area, town, state, country} = eachItem.address
           return (
-          <div>
+          <div key={eachItem._id}>
             <p><b>Shipping to {name}</b>, {pinCode}, {area}, {town}, {state}, {country}</p>
 
             <div  style={{display:'flex', alignItems:'center', gap:'3vw'}}>

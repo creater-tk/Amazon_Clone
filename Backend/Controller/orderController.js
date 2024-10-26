@@ -9,54 +9,58 @@ const orderModel = mongoose.model("Orders", orderSchema);
 
 const placeOrder = async (req, res) => {
   try {
-    const { userId, items, amount, address } = req.body;
+    const { userId, items, amount, address, paymentMode } = req.body;
 
     // Validate inputs
     if (!userId || !Array.isArray(items) || items.length === 0 || !amount || !address) {
-      return res.status(400).send({ success: false, message: "Invalid input data" });
+      return res.status(400).send({ success: false, message: "Error" });
     }
 
-    const newOrder = new orderModel({ userId, items, amount, address });
+    const newOrder = new orderModel({ userId, items, amount, address, paymentMode });
     await newOrder.save();
-    await User.findByIdAndUpdate(userId, { cartInfo: {} });
+    await User.findByIdAndUpdate(userId, { cartInfo: [] });
 
-    const line_items = items.map((item) => ({
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: item.name,
+    if(paymentMode === 'onlinePayment'){
+      const line_items = items.map((item) => ({
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: item.name,
+          },
+          unit_amount: item.new_price * 100,
         },
-        unit_amount: item.new_price * 100,
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      }));
 
-    line_items.push({
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: "Delivery Charges",
+      line_items.push({
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: "Delivery Charges",
+          },
+          unit_amount: 40 * 100,
         },
-        unit_amount: 40 * 100,
-      },
-      quantity: 1,
-    });
+        quantity: 1,
+      });
 
-    // Ensure no NaN values
-    if (line_items.some((item) => isNaN(item.price_data.unit_amount) || isNaN(item.quantity))) {
-      return res.status(400).send({ success: false, message: "Invalid item prices or quantities" });
+      // Ensure no NaN values
+      if (line_items.some((item) => isNaN(item.price_data.unit_amount) || isNaN(item.quantity))) {
+        return res.status(400).send({ success: false, message: "Invalid item prices or quantities" });
+      }
+
+      const session = await stripe.checkout.sessions.create({
+        line_items: line_items,
+        mode: "payment",
+        success_url: `http://localhost:5173/verify?success=true&orderId=${newOrder._id}`,
+        cancel_url: `http://localhost:5173/verify?success=false&orderId=${newOrder._id}`,
+      });
+
+      return res.status(200).send({ success: true, message: "Payment Successful", session_url: session.url });
+    }else{
+      return res.status(200).send({success:true, message:'Order Confirmed', session_url: `http://localhost:5173/verify?success=true&orderId=${newOrder._id}`,})
     }
-
-    const session = await stripe.checkout.sessions.create({
-      line_items: line_items,
-      mode: "payment",
-      success_url: `http://localhost:5173/verify?success=true&orderId=${newOrder._id}`,
-      cancel_url: `http://localhost:5173/verify?success=false&orderId=${newOrder._id}`,
-    });
-
-    return res.status(200).send({ success: true, message: "Payment Successful", session_url: session.url });
   } catch (error) {
-    return res.status(400).send({ success: false, message: `Payment Failed: ${error.message}` });
+    return res.status(400).send({ success: false, message: `Order Failed: ${error.message}` });
   }
 };
 
@@ -78,11 +82,18 @@ const verifyOrder = async (req, res)=>{
 const viewOrders = async (req, res)=>{
   try {
    const orderId = req.body.orderId;
-   const orderedItems =  await orderModel.find({_id:orderId})
+   let orderedItems;
+   if(orderId){
+    orderedItems =  await orderModel.find({_id:orderId})
+   }else{
+    orderedItems = await orderModel.find({});
+   }
+
     res.status(200).send({success:true, data:orderedItems})
   } catch (error) {
     console.log(error);
     res.status(400).send({success:false, message:'Error'})
   }
 }
+
 export {placeOrder, verifyOrder, viewOrders};
